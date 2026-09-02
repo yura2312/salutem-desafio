@@ -5,7 +5,6 @@ import com.lanchonete.salutem.bebida.model.dto.BebidaResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BebidaService {
