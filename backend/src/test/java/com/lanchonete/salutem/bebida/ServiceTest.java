@@ -33,7 +33,7 @@ public class ServiceTest {
 
     @Test
     @DisplayName("Deve encontrar uma bebida com id valido")
-    void encontrarBebidaPorId(){
+    void encontrarBebidaPorId() {
         var bebida = BebidaEntity.builder()
                 .id(1L)
                 .descricao("Coca-Cola 600ML")
@@ -58,13 +58,46 @@ public class ServiceTest {
 
     @Test
     @DisplayName("Deve lançar exceção BebidaNotFoundException quando não encontrar bebida")
-    void excecaoEncontrarBebidaPorId(){
+    void excecaoEncontrarBebidaPorId() {
 
         when(repository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.findById(1L))
                 .isInstanceOf(BebidaNotFoundException.class)
                 .hasMessageContaining("Bebida");
-    } 
+    }
 
+    @Test
+    @DisplayName("Deve encontrar todas as bebidas")
+    void encontrarTodasBebidas() {
+        var bebida1 = BebidaEntity.builder()
+                .id(1L)
+                .descricao("Coca-Cola 600ML")
+                .precoUnitario(BigDecimal.TWO)
+                .contemAcucar(true)
+                .build();
+
+        var bebida2 = BebidaEntity.builder()
+                .id(2L)
+                .descricao("Pepsi Black 300ML")
+                .precoUnitario(BigDecimal.ONE)
+                .contemAcucar(false)
+                .build();
+
+        var dtoResponse1 = new BebidaResponse(bebida1.getDescricao(), bebida1.getPrecoUnitario(), bebida1.getContemAcucar());
+        var dtoResponse2 = new BebidaResponse(bebida2.getDescricao(), bebida2.getPrecoUnitario(), bebida2.getContemAcucar());
+
+        when(repository.findAll()).thenReturn(java.util.List.of(bebida1, bebida2));
+        when(mapper.toBebidaResponse(bebida1)).thenReturn(dtoResponse1);
+        when(mapper.toBebidaResponse(bebida2)).thenReturn(dtoResponse2);
+
+        var serviceResponse = service.findAll();
+
+        assertThat(serviceResponse)
+                .isNotNull()
+                .hasSize(2)
+                .containsExactly(dtoResponse1, dtoResponse2);
+
+        verify(repository).findAll();
+    }
 }
