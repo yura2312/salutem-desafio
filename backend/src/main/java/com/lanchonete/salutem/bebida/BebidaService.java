@@ -12,12 +12,13 @@ public class BebidaService {
 
     private final BebidaRepository repository;
     private final BebidaMapper mapper;
+
     public BebidaService(BebidaRepository repository, BebidaMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
 
-    public BebidaResponse findById(Long id){
+    public BebidaResponse findById(Long id) {
         var bebida = repository.findById(id)
                 .orElseThrow(() -> new BebidaNotFoundException("Bebida de id: " + id + " não encontrada"));
         return mapper.toBebidaResponse(bebida);
@@ -34,5 +35,19 @@ public class BebidaService {
         var bebidaSave = mapper.toBebidaEntity(request);
         repository.save(bebidaSave);
         return mapper.toBebidaResponse(bebidaSave);
+    }
+
+    public List<BebidaResponse> findByDescricao(String descricao) {
+        var bebidas = repository.findByDescricao(descricao);
+        return bebidas
+                .stream()
+                .map(mapper::toBebidaResponse)
+                .toList();
+    }
+
+    public void delete(Long id) {
+        var bebida = repository.findById(id)
+                .orElseThrow(() -> new BebidaNotFoundException("Bebida de id: " + id + " não encontrada"));
+        repository.delete(bebida);
     }
 }
