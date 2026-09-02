@@ -24,3 +24,9 @@ A aplicacao web foi desenvolvida com arquitetura de monolito utilizando Spring B
 - FLyway 
 - MapStruct
 - Lombok
+- TestContainers
+
+## Decisões de projeto
+- Uso de TestContainers necessario para testar a query nativa, 
+porque o DataJpaTest utiliza um banco de dados em memoria(H2), sendo assim necessario o uso de TestContainers para criar um container do postgresql para rodar a query.
+__Importante notar que eh possivel utilizar o DataJpaTest em casos de uso de JPQL ou query derivada do JPA__.
