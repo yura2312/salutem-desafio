@@ -2,7 +2,9 @@ package com.lanchonete.salutem.bebida;
 
 
 import com.lanchonete.salutem.bebida.model.BebidaEntity;
+import com.lanchonete.salutem.bebida.model.dto.BebidaRequest;
 import com.lanchonete.salutem.bebida.model.dto.BebidaResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceTest {
@@ -100,4 +101,34 @@ public class ServiceTest {
 
         verify(repository).findAll();
     }
+
+    @Test
+    @DisplayName("Deve salvar uma bebida valida")
+    void salvarBebida() {
+        var dtoRequest = new BebidaRequest("Coca-Cola 600ML", BigDecimal.TWO, true);
+
+        var bebidaSalva = BebidaEntity.builder()
+                .id(1L)
+                .descricao("Coca-Cola 600ML")
+                .precoUnitario(BigDecimal.TWO)
+                .contemAcucar(true)
+                .build();
+
+        var dtoResponse = new BebidaResponse("Coca-Cola 600ML", BigDecimal.TWO, true);
+
+        when(mapper.toBebidaEntity(dtoRequest)).thenReturn(bebidaSalva);
+        when(repository.save(bebidaSalva)).thenReturn(bebidaSalva);
+        when(mapper.toBebidaResponse(bebidaSalva)).thenReturn(dtoResponse);
+
+        var serviceResponse = service.save(dtoRequest);
+
+        assertThat(serviceResponse)
+                .isNotNull()
+                .isEqualTo(dtoResponse);
+
+        verify(mapper).toBebidaEntity(dtoRequest);
+        verify(repository).save(bebidaSalva);
+        verify(mapper).toBebidaResponse(bebidaSalva);
+    }
+
 }
