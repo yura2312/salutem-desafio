@@ -3,9 +3,11 @@ package com.lanchonete.salutem.bebida;
 import com.lanchonete.salutem.bebida.model.BebidaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface BebidaRepository extends JpaRepository<BebidaEntity, Long> {
 
     @NativeQuery("""
