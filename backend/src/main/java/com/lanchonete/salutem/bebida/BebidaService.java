@@ -30,4 +30,9 @@ public class BebidaService {
                 .toList();
     }
 
+    public BebidaResponse save(BebidaRequest request) {
+        var bebidaSave = mapper.toBebidaEntity(request);
+        repository.save(bebidaSave);
+        return mapper.toBebidaResponse(bebidaSave);
+    }
 }
