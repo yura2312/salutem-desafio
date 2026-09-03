@@ -42,7 +42,7 @@ public class ServiceTest {
                 .contemAcucar(true)
                 .build();
 
-        var dtoResponse = new BebidaResponse(bebida.getDescricao(), bebida.getPrecoUnitario(), bebida.getContemAcucar());
+        var dtoResponse = new BebidaResponse(bebida.getId(),bebida.getDescricao(), bebida.getPrecoUnitario(), bebida.getContemAcucar());
 
         when(repository.findById(1L)).thenReturn(Optional.of(bebida));
         when(mapper.toBebidaResponse(bebida)).thenReturn(dtoResponse);
@@ -85,8 +85,8 @@ public class ServiceTest {
                 .contemAcucar(false)
                 .build();
 
-        var dtoResponse1 = new BebidaResponse(bebida1.getDescricao(), bebida1.getPrecoUnitario(), bebida1.getContemAcucar());
-        var dtoResponse2 = new BebidaResponse(bebida2.getDescricao(), bebida2.getPrecoUnitario(), bebida2.getContemAcucar());
+        var dtoResponse1 = new BebidaResponse(bebida1.getId(),bebida1.getDescricao(), bebida1.getPrecoUnitario(), bebida1.getContemAcucar());
+        var dtoResponse2 = new BebidaResponse(bebida2.getId(),bebida2.getDescricao(), bebida2.getPrecoUnitario(), bebida2.getContemAcucar());
 
         when(repository.findAll()).thenReturn(java.util.List.of(bebida1, bebida2));
         when(mapper.toBebidaResponse(bebida1)).thenReturn(dtoResponse1);
@@ -114,7 +114,7 @@ public class ServiceTest {
                 .contemAcucar(true)
                 .build();
 
-        var dtoResponse = new BebidaResponse("Coca-Cola 600ML", BigDecimal.TWO, true);
+        var dtoResponse = new BebidaResponse(1L, "Coca-Cola 600ML", BigDecimal.TWO, true);
 
         when(mapper.toBebidaEntity(dtoRequest)).thenReturn(bebidaSalva);
         when(repository.save(bebidaSalva)).thenReturn(bebidaSalva);
