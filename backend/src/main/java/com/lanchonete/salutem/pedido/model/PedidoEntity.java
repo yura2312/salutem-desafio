@@ -29,11 +29,11 @@ public class PedidoEntity {
 
     private String descricao;
 
-    private String cliente_nome;
+    private String clienteNome;
 
-    private String cliente_endereco;
+    private String clienteEndereco;
 
-    private String cliente_telefone;
+    private String clienteTelefone;
 
     @ManyToMany
     @JoinTable(
