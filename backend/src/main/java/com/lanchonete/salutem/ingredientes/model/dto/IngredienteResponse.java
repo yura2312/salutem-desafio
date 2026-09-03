@@ -1,7 +1,10 @@
 package com.lanchonete.salutem.ingredientes.model.dto;
 
+import java.math.BigDecimal;
+
 public record IngredienteResponse (
+        Long id,
         String descricao,
-        Double precoUnitario,
+        BigDecimal precoUnitario,
         Boolean adicional
 ){}
