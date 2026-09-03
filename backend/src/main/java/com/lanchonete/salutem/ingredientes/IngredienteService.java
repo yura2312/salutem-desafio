@@ -1,10 +1,15 @@
 package com.lanchonete.salutem.ingredientes;
 
+import com.lanchonete.salutem.ingredientes.model.IngredienteEntity;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteRequest;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class IngredienteService {
@@ -60,4 +65,7 @@ public class IngredienteService {
         return mapper.toResponse(ingredienteEncontrado);
     }
 
+    public Set<IngredienteEntity> findAllById(List<Long> ids) {
+        return new HashSet<>(repository.findAllById(ids));
+    }
 }
