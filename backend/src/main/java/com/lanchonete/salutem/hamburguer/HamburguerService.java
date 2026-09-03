@@ -39,9 +39,6 @@ public class HamburguerService {
 
     public HamburguerResponse save(HamburguerRequest request){
         var hamburguer = mapper.toEntity(request);
-        /*var listIngrediente = ingredienteRepository.findAllById(request.idIngredientes());
-
-        Set<IngredienteEntity> setIngrediente = new HashSet<>(listIngrediente);*/
         var listI = ingredienteService.findAllById(request.idIngredientes());
         hamburguer.setIngredientes(listI);
 
