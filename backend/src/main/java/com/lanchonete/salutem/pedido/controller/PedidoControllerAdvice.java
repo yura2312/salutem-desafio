@@ -1,6 +1,7 @@
 package com.lanchonete.salutem.pedido.controller;
 
 import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyException;
+import com.lanchonete.salutem.pedido.exception.PedidoItemIdsNotFoundException;
 import com.lanchonete.salutem.pedido.exception.PedidoNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -33,4 +34,13 @@ public class PedidoControllerAdvice {
         problem.setTitle("Bebida e Hamburguer nulos");
         return ResponseEntity.status(400).body(problem);
     }
+
+    @ExceptionHandler(PedidoItemIdsNotFoundException.class)
+    public ResponseEntity<ProblemDetail> pedidoItemIdsNotFoundExceptionHandler(PedidoItemIdsNotFoundException ex) {
+        var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problem.setTitle("Ids de itens não encontrados");
+        return ResponseEntity.status(400).body(problem);
+    }
+
+
 }
