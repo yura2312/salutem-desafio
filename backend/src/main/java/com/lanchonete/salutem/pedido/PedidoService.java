@@ -211,26 +211,6 @@ public class PedidoService {
         }
     }
 
-    private static BigDecimal calcularValorTotal(PedidoEntity pedido) {
-
-        BigDecimal totalHamburguer = pedido.getHamburgueres()
-                .stream()
-                .map(hamburguer ->
-                        hamburguer.getHamburguer()
-                                .getValor()
-                                .multiply(BigDecimal.valueOf(hamburguer.getQuantidade())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalBebida = pedido.getBebidas()
-                .stream()
-                .map(bebida -> bebida.getBebida()
-                        .getPrecoUnitario()
-                        .multiply(BigDecimal.valueOf(bebida.getQuantidade())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return totalHamburguer.add(totalBebida);
-    }
-
     private static BigDecimal calcularValorTotalPedido(PedidoEntity entity) {
         BigDecimal totalHamburguer = entity.getHamburgueres()
                 .stream()
