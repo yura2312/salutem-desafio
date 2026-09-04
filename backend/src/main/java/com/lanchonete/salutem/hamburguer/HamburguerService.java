@@ -1,5 +1,6 @@
 package com.lanchonete.salutem.hamburguer;
 
+import com.lanchonete.salutem.hamburguer.model.HamburguerEntity;
 import com.lanchonete.salutem.hamburguer.model.dto.HamburguerRequest;
 import com.lanchonete.salutem.hamburguer.model.dto.HamburguerResponse;
 import com.lanchonete.salutem.ingredientes.IngredienteRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class HamburguerService {
@@ -72,4 +74,13 @@ public class HamburguerService {
         var saved = repository.save(updatedHamburguer);
         return mapper.toResponse(saved);
     }
+
+    public List<HamburguerResponse> findAllEntityByIds(Set<Long> ids) {
+        var hamburgueres = repository.findAllById(ids);
+        return hamburgueres
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
+
 }

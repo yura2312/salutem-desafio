@@ -1,10 +1,12 @@
 package com.lanchonete.salutem.bebida;
 
+import com.lanchonete.salutem.bebida.model.BebidaEntity;
 import com.lanchonete.salutem.bebida.model.dto.BebidaRequest;
 import com.lanchonete.salutem.bebida.model.dto.BebidaResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BebidaService {
@@ -56,5 +58,9 @@ public class BebidaService {
         bebidaEncontrada = mapper.toBebidaEntity(request);
         repository.save(bebidaEncontrada);
         return mapper.toBebidaResponse(bebidaEncontrada);
+    }
+
+    public List<BebidaEntity> findAllEntityByIds(Set<Long> longs) {
+        return repository.findAllById(longs);
     }
 }
