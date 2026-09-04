@@ -2,6 +2,7 @@ package com.lanchonete.salutem.ingredientes;
 
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteRequest;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteResponse;
+import com.lanchonete.salutem.ingredientes.docs.IngredienteControllerDocs;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ingrediente")
-public class IngredienteController {
+public class IngredienteController implements IngredienteControllerDocs {
 
     private final IngredienteService service;
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class BebidaControllerAdvisor {
+public class BebidaControllerAdvisor implements com.lanchonete.salutem.bebida.docs.BebidaControllerAdviceDocs {
 
     @ExceptionHandler(BebidaNotFoundException.class)
     public ResponseEntity<ProblemDetail> bebidaNotFoundExceptionHandler(BebidaNotFoundException ex) {

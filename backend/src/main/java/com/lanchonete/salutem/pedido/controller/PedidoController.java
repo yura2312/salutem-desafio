@@ -1,6 +1,7 @@
 package com.lanchonete.salutem.pedido.controller;
 
 import com.lanchonete.salutem.pedido.PedidoService;
+import com.lanchonete.salutem.pedido.controller.docs.PedidoControllerDocs;
 import com.lanchonete.salutem.pedido.model.dto.PedidoRequest;
 import com.lanchonete.salutem.pedido.model.dto.PedidoResponse;
 import jakarta.validation.Valid;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedidos")
-public class PedidoController {
+public class PedidoController implements PedidoControllerDocs {
 
     private final PedidoService pedidoService;
 

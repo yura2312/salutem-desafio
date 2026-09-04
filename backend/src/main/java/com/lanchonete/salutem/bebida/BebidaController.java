@@ -1,10 +1,10 @@
 package com.lanchonete.salutem.bebida;
 
+import com.lanchonete.salutem.bebida.docs.BebidaControllerDocs;
 import com.lanchonete.salutem.bebida.model.dto.BebidaRequest;
 import com.lanchonete.salutem.bebida.model.dto.BebidaResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bebidas")
-public class BebidaController {
+public class BebidaController implements BebidaControllerDocs {
 
     private final BebidaService service;
 
@@ -45,7 +45,7 @@ public class BebidaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

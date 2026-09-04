@@ -3,6 +3,7 @@ package com.lanchonete.salutem.pedido.controller;
 import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyException;
 import com.lanchonete.salutem.pedido.exception.PedidoItemIdsNotFoundException;
 import com.lanchonete.salutem.pedido.exception.PedidoNotFoundException;
+import com.lanchonete.salutem.pedido.controller.docs.PedidoControllerAdviceDocs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class PedidoControllerAdvice {
+public class PedidoControllerAdvice implements PedidoControllerAdviceDocs {
 
     @ExceptionHandler(PedidoNotFoundException.class)
+    @Override
     public ResponseEntity<ProblemDetail> pedidoNotFoundExceptionHandler(PedidoNotFoundException ex) {
         var problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Pedido não encontrado");
@@ -21,6 +23,7 @@ public class PedidoControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @Override
     public ResponseEntity<ProblemDetail> requestValidationExceptionHandler(MethodArgumentNotValidException ex) {
         String detail = ex.getFieldError().getDefaultMessage();
         var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
@@ -29,6 +32,7 @@ public class PedidoControllerAdvice {
     }
 
     @ExceptionHandler(PedidoBebidaAndHamburguerEmptyException.class)
+    @Override
     public ResponseEntity<ProblemDetail> pedidoBebidaAndHamburguerEmptyExceptionHandler(PedidoBebidaAndHamburguerEmptyException ex) {
         var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Bebida e Hamburguer nulos");
@@ -36,6 +40,7 @@ public class PedidoControllerAdvice {
     }
 
     @ExceptionHandler(PedidoItemIdsNotFoundException.class)
+    @Override
     public ResponseEntity<ProblemDetail> pedidoItemIdsNotFoundExceptionHandler(PedidoItemIdsNotFoundException ex) {
         var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Ids de itens não encontrados");
