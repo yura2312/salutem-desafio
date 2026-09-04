@@ -1,18 +1,14 @@
-package com.lanchonete.salutem.pedido.model;
+package com.lanchonete.salutem.pedido.model.entity;
 
-import com.lanchonete.salutem.bebida.model.BebidaEntity;
-import com.lanchonete.salutem.hamburguer.model.HamburguerEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,23 +33,34 @@ public class PedidoEntity {
 
     private String clienteTelefone;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "pedido_hamburguer",
             joinColumns = @JoinColumn(name = "id_pedido"),
             inverseJoinColumns = @JoinColumn(name = "id_hamburguer")
+    )*/
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "pedido",
+            orphanRemoval = true
     )
-    private Set<HamburguerEntity> hamburgueres = new HashSet<>();
+    private Set<PedidoHamburguerEntity> hamburgueres = new HashSet<>();
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "pedido_bebida",
             joinColumns = @JoinColumn(name = "id_pedido"),
             inverseJoinColumns = @JoinColumn(name = "id_bebida")
+    )*/
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "pedido",
+            orphanRemoval = true
     )
-    private List<BebidaEntity> bebidas = new ArrayList<>();
+    private Set<PedidoBebidaEntity> bebidas = new HashSet<>();
 
     private String observacoes;
+
 
     @PrePersist
     private void prePersist(){

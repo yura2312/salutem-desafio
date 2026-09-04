@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Map;
 
 public record PedidoRequest(
         @NotNull(message = "Descrição não pode ser nula")
@@ -26,11 +27,9 @@ public record PedidoRequest(
         @Length(min = 10, max = 11, message = "Telefone do cliente deve ter entre 10 e 11 dígitos")
         String clienteTelefone,
 
-        @NotNull(message = "A lista de ids de hamburgueres não pode ser nula")
-        List<@Positive(message = "A lista de ids de hamburgueres não pode conter valores negativos")
-                Long> idHamburgueres,
-        List<@Positive(message = "A lista de ids de bebidas não pode conter valores negativos")
-                Long> idBebidas,
+        //@NotNull(message = "A lista de ids de hamburgueres não pode ser nula")
+        Map<Long, Integer> idHamburguerQuantidade,
+        Map<Long, Integer> idBebidaQuantidade,
         @Length(max = 100, message = "As observações não podem ter mais de 100 caracteres")
         String observacoes
 ) {

@@ -14,8 +14,8 @@ public record PedidoResponse(
         String clienteNome,
         String clienteEndereco,
         String clienteTelefone,
-        List<HamburguerResponse> hamburgueres,
-        List<BebidaResponse> bebidas,
+        Set<ItemResponse> hamburgueres,
+        Set<ItemResponse> bebidas,
         String observacoes
 ) {
 }
