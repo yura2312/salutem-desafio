@@ -2,6 +2,8 @@ package com.lanchonete.salutem.pedido;
 
 import com.lanchonete.salutem.bebida.BebidaService;
 import com.lanchonete.salutem.hamburguer.HamburguerService;
+import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyException;
+import com.lanchonete.salutem.pedido.exception.PedidoNotFoundException;
 import com.lanchonete.salutem.pedido.model.PedidoEntity;
 import com.lanchonete.salutem.pedido.model.dto.PedidoRequest;
 import com.lanchonete.salutem.pedido.model.dto.PedidoResponse;
