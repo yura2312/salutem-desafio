@@ -5,7 +5,9 @@ import com.lanchonete.salutem.bebida.model.BebidaEntity;
 import com.lanchonete.salutem.hamburguer.HamburguerService;
 import com.lanchonete.salutem.hamburguer.model.HamburguerEntity;
 import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyException;
+import com.lanchonete.salutem.pedido.exception.PedidoItemIdsNotFoundException;
 import com.lanchonete.salutem.pedido.exception.PedidoNotFoundException;
+import com.lanchonete.salutem.pedido.mapper.PedidoMapper;
 import com.lanchonete.salutem.pedido.model.entity.*;
 import com.lanchonete.salutem.pedido.model.dto.PedidoRequest;
 import com.lanchonete.salutem.pedido.model.dto.PedidoResponse;
@@ -83,7 +85,7 @@ public class PedidoService {
         var bebidas = bebidaService.findAllEntityByIds(request.idBebidaQuantidade().keySet());
 
         if (hamburgueres.isEmpty() && bebidas.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum hamburguer ou bebida encontrado para os ids fornecidos");
+            throw new PedidoBebidaAndHamburguerEmptyException("Nenhum hamburguer ou bebida encontrado para os ids fornecidos");
         }
 
         verificaIdsValidosHamburguer(request, hamburgueres);
@@ -134,7 +136,7 @@ public class PedidoService {
         var bebidas = bebidaService.findAllEntityByIds(request.idBebidaQuantidade().keySet());
 
         if (hamburgueres.isEmpty() && bebidas.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum hamburguer ou bebida encontrado para os ids fornecidos");
+            throw new PedidoItemIdsNotFoundException("Nenhum hamburguer ou bebida encontrado para os ids fornecidos");
         }
 
         verificaIdsValidosHamburguer(request, hamburgueres);
@@ -189,7 +191,7 @@ public class PedidoService {
                 .toList();
 
         if (!idsHamburgueresInvalido.isEmpty()) {
-            throw new RuntimeException("Ids de hamburgueres não encontrados: " + idsHamburgueresInvalido);
+            throw new PedidoItemIdsNotFoundException("Ids de hamburgueres não encontrados: " + idsHamburgueresInvalido);
         }
     }
 
@@ -207,7 +209,7 @@ public class PedidoService {
                 .toList();
 
         if (!idsBebidasInvalido.isEmpty()) {
-            throw new RuntimeException("Ids de bebidas não encontrados: " + idsBebidasInvalido);
+            throw new PedidoItemIdsNotFoundException("Ids de bebidas não encontrados: " + idsBebidasInvalido);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.lanchonete.salutem.pedido;
+package com.lanchonete.salutem.pedido.mapper;
 
 import com.lanchonete.salutem.pedido.model.dto.ItemResponse;
 import com.lanchonete.salutem.pedido.model.entity.PedidoBebidaEntity;
