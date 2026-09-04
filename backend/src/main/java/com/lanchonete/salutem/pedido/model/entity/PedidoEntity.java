@@ -61,6 +61,7 @@ public class PedidoEntity {
 
     private String observacoes;
 
+    private BigDecimal valorTotal = BigDecimal.ZERO;
 
     @PrePersist
     private void prePersist(){

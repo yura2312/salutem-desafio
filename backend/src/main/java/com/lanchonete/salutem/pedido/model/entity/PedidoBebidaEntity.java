@@ -2,10 +2,9 @@ package com.lanchonete.salutem.pedido.model.entity;
 
 import com.lanchonete.salutem.bebida.model.BebidaEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 
 @Entity
@@ -13,6 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "pedido_bebida")
 public class PedidoBebidaEntity {
 
@@ -30,5 +30,7 @@ public class PedidoBebidaEntity {
     private BebidaEntity bebida;
 
     private Integer quantidade;
+
+    private BigDecimal precoVenda;
 
 }

@@ -4,6 +4,8 @@ import com.lanchonete.salutem.hamburguer.model.HamburguerEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -25,6 +27,8 @@ public class PedidoHamburguerEntity {
     @MapsId("idHamburguer")
     @JoinColumn(name = "id_hamburguer")
     private HamburguerEntity hamburguer;
+
+    private BigDecimal precoVenda;
 
     private Integer quantidade;
 

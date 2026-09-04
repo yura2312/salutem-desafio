@@ -31,13 +31,13 @@ public class PedidoService {
         this.bebidaService = bebidaService;
     }
 
-    public PedidoResponse getById(Long id){
+    public PedidoResponse getById(Long id) {
         PedidoEntity pedido = repository.findById(id)
                 .orElseThrow(() -> new PedidoNotFoundException("Pedido de id: " + id + " não encontrado"));
         return mapper.toResponse(pedido);
     }
 
-    public List<PedidoResponse> getAll(){
+    public List<PedidoResponse> getAll() {
         return repository.findAll()
                 .stream()
                 .map(mapper::toResponse)
@@ -64,14 +64,14 @@ public class PedidoService {
 //        return mapper.toResponse(pedidoSave);
 //    }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         var pedido = repository.findById(id)
                 .orElseThrow(() -> new PedidoNotFoundException("Pedido de id: " + id + " não encontrado"));
         repository.delete(pedido);
     }
 
     @Transactional
-    public PedidoResponse update(Long id, PedidoRequest request){
+    public PedidoResponse update(Long id, PedidoRequest request) {
         if (request.idBebidaQuantidade().isEmpty() && request.idHamburguerQuantidade().isEmpty()) {
             throw new PedidoBebidaAndHamburguerEmptyException("Ids de hamburgueres e bebidas não podem ser nulos");
         }
@@ -94,7 +94,12 @@ public class PedidoService {
         for (var hamburguer : hamburgueres) {
             var quantidade = request.idHamburguerQuantidade().get(hamburguer.getId());
             var embeddedId = new PedidoHamburguerEmbedded(pedido.getId(), hamburguer.getId());
-            var pedidoHamburguer = new PedidoHamburguerEntity(embeddedId, pedido, hamburguer, quantidade);
+            var pedidoHamburguer = PedidoHamburguerEntity.builder()
+                    .id(embeddedId)
+                    .hamburguer(hamburguer)
+                    .quantidade(quantidade)
+                    .precoVenda(hamburguer.getValor())
+                    .build();
             pedido.getHamburgueres().add(pedidoHamburguer);
         }
 
@@ -102,10 +107,18 @@ public class PedidoService {
         for (var bebida : bebidas) {
             var quantidade = request.idBebidaQuantidade().get(bebida.getId());
             var embeddedId = new PedidoBebidaEmbedded(pedido.getId(), bebida.getId());
-            var pedidoBebida = new PedidoBebidaEntity(embeddedId, pedido, bebida, quantidade);
+            var pedidoBebida = PedidoBebidaEntity.builder()
+                    .id(embeddedId)
+                    .pedido(pedido)
+                    .bebida(bebida)
+                    .quantidade(quantidade)
+                    .precoVenda(bebida.getPrecoUnitario())
+                    .build();
             pedido.getBebidas().add(pedidoBebida);
         }
 
+       // pedido.setValorTotal(calcularValorTotal(pedido));
+    pedido.setValorTotal(calcularValorTotalPedido(pedido));
         repository.save(pedido);
         return mapper.toResponse(pedido);
     }
@@ -133,20 +146,34 @@ public class PedidoService {
         for (var hamburguer : hamburgueres) {
             var quantidade = request.idHamburguerQuantidade().get(hamburguer.getId());
             var embeddedId = new PedidoHamburguerEmbedded(pedidoSalvo.getId(), hamburguer.getId());
-            var pedidoHamburguer = new PedidoHamburguerEntity(embeddedId, pedidoSalvo, hamburguer, quantidade);
+            var pedidoHamburguer = PedidoHamburguerEntity.builder()
+                    .id(embeddedId)
+                    .pedido(pedidoSalvo)
+                    .quantidade(quantidade)
+                    .hamburguer(hamburguer)
+                    .precoVenda(hamburguer.getValor())
+                    .build();
             pedidoSalvo.getHamburgueres().add(pedidoHamburguer);
         }
 
         for (var bebida : bebidas) {
             var quantidade = request.idBebidaQuantidade().get(bebida.getId());
             var embeddedId = new PedidoBebidaEmbedded(pedidoSalvo.getId(), bebida.getId());
-            var pedidoBebida = new PedidoBebidaEntity(embeddedId, pedidoSalvo, bebida, quantidade);
+            var pedidoBebida = PedidoBebidaEntity.builder()
+                    .id(embeddedId)
+                    .pedido(pedidoSalvo)
+                    .bebida(bebida)
+                    .quantidade(quantidade)
+                    .precoVenda(bebida.getPrecoUnitario())
+                    .build();
             pedidoSalvo.getBebidas().add(pedidoBebida);
         }
 
+        //pedidoSalvo.setValorTotal(calcularValorTotal(pedidoSalvo));
+        pedidoSalvo.setValorTotal(calcularValorTotalPedido(pedidoSalvo));
         repository.save(pedidoSalvo);
         return mapper.toResponse(pedidoSalvo);
-}
+    }
 
     private static void verificaIdsValidosHamburguer(PedidoRequest request, List<HamburguerEntity> hamburgueres) {
         var idsHamburgueresEncontrados = hamburgueres
@@ -161,7 +188,7 @@ public class PedidoService {
                 .filter(id -> !idsHamburgueresEncontrados.contains(id))
                 .toList();
 
-        if (!idsHamburgueresInvalido.isEmpty()){
+        if (!idsHamburgueresInvalido.isEmpty()) {
             throw new RuntimeException("Ids de hamburgueres não encontrados: " + idsHamburgueresInvalido);
         }
     }
@@ -179,7 +206,7 @@ public class PedidoService {
                 .filter(id -> !idsBebidasEncontrados.contains(id))
                 .toList();
 
-        if (!idsBebidasInvalido.isEmpty()){
+        if (!idsBebidasInvalido.isEmpty()) {
             throw new RuntimeException("Ids de bebidas não encontrados: " + idsBebidasInvalido);
         }
     }
@@ -188,12 +215,37 @@ public class PedidoService {
 
         BigDecimal totalHamburguer = pedido.getHamburgueres()
                 .stream()
-                .map(hamburguer -> hamburguer.getHamburguer().getValor())
+                .map(hamburguer ->
+                        hamburguer.getHamburguer()
+                                .getValor()
+                                .multiply(BigDecimal.valueOf(hamburguer.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal totalBebida = pedido.getBebidas()
                 .stream()
-                .map(bebida -> bebida.getBebida().getPrecoUnitario())
+                .map(bebida -> bebida.getBebida()
+                        .getPrecoUnitario()
+                        .multiply(BigDecimal.valueOf(bebida.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return totalHamburguer.add(totalBebida);
+    }
+
+    private static BigDecimal calcularValorTotalPedido(PedidoEntity entity) {
+        BigDecimal totalHamburguer = entity.getHamburgueres()
+                .stream()
+                .map(hamburguer -> hamburguer
+                        .getPrecoVenda()
+                        .multiply(BigDecimal.valueOf(hamburguer.getQuantidade()))
+                )
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal totalBebida = entity.getBebidas()
+                .stream()
+                .map(bebida -> bebida
+                        .getPrecoVenda()
+                        .multiply(BigDecimal.valueOf(bebida.getQuantidade()))
+                )
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return totalHamburguer.add(totalBebida);
