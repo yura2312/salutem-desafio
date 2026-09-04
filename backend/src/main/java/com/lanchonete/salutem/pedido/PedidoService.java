@@ -39,6 +39,11 @@ public class PedidoService {
     }
 
     public PedidoResponse save(PedidoRequest request){
+
+        if (request.idBebidas().isEmpty() && request.idHamburgueres().isEmpty()) {
+            throw new PedidoBebidaAndHamburguerEmptyException("Ids de hamburgueres e bebidas não podem ser nulos");
+        }
+
         //TODO: Implementar validacao de ids para hamburgueres e bebidas
         var hamburguer = hamburguerService.findAllById(request.idHamburgueres());
         var bebidas = bebidaService.findAllById(request.idBebidas());
@@ -60,6 +65,11 @@ public class PedidoService {
     }
 
     public PedidoResponse update(Long id, PedidoRequest request){
+
+        if (request.idBebidas().isEmpty() && request.idHamburgueres().isEmpty()) {
+            throw new IllegalArgumentException("Ids de hamburgueres e bebidas não podem ser nulos");
+        }
+
         var pedido = repository.findById(id)
                 .orElseThrow(() -> new PedidoNotFoundException("Pedido de id: " + id + " não encontrado"));
 
