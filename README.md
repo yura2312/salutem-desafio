@@ -48,9 +48,11 @@ __Importante notar que eh possivel utilizar o DataJpaTest em casos de uso de JPQ
 | api/bebidas     | /{id} | Body | /{id} | /{id}  | ?{descricao}|
 | api/ingrediente | /{id} | Body | /{id} | /{id}  |?{descricao}|
  | api/hamburguers| /{id} | Body | /{id} | /{id}  |?{descricao}|
+| api/pedidos     | /{id} | Body | /{id} | /{id}  |
 
 
 ## Como rodar a aplicacao
 
 1. Clonar repositorio: git clone https://github.com/yura2312/salutem-desafio.git
-2. Rodar 
+2. Rodar o docker compose: docker-compose up -d
+3. Acessar a aplicacao em http://localhost:8080
