@@ -47,7 +47,8 @@ __Importante notar que é possível utilizar o DataJpaTest em casos de uso de JP
 - Angular material para prototipagem rápida.
 
 ## Endpoints 
-- Postman com coleção de endpoints na pasta /api
+- Postman com coleção de endpoints na pasta /api/postman
+- Bruno com colecão de endpoints na pasta /api/bruno
 - Swagger com documentação dos endpoints http://localhost:8080/swagger-ui.html.html
 
 | Rota            | GET   | POST | PUT   | DELETE | GET |
