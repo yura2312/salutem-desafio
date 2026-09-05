@@ -55,9 +55,10 @@ public class BebidaService {
     public BebidaResponse update(Long id, BebidaRequest request) {
         var bebidaEncontrada = repository.findById(id)
                 .orElseThrow(() -> new BebidaNotFoundException("Bebida de id: " + id + " não encontrada"));
-        bebidaEncontrada = mapper.toBebidaEntity(request);
-        repository.save(bebidaEncontrada);
-        return mapper.toBebidaResponse(bebidaEncontrada);
+        var bebidaSalva = mapper.toBebidaEntity(request);
+        bebidaSalva.setId(bebidaEncontrada.getId());
+        repository.save(bebidaSalva);
+        return mapper.toBebidaResponse(bebidaSalva);
     }
 
     public List<BebidaEntity> findAllEntityByIds(Set<Long> longs) {
