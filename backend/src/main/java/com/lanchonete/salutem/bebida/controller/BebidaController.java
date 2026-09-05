@@ -1,5 +1,6 @@
-package com.lanchonete.salutem.bebida;
+package com.lanchonete.salutem.bebida.controller;
 
+import com.lanchonete.salutem.bebida.BebidaService;
 import com.lanchonete.salutem.bebida.docs.BebidaControllerDocs;
 import com.lanchonete.salutem.bebida.model.dto.BebidaRequest;
 import com.lanchonete.salutem.bebida.model.dto.BebidaResponse;

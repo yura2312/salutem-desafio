@@ -1,5 +1,6 @@
-package com.lanchonete.salutem.ingredientes;
+package com.lanchonete.salutem.ingredientes.controller;
 
+import com.lanchonete.salutem.ingredientes.IngredienteService;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteRequest;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteResponse;
 import com.lanchonete.salutem.ingredientes.docs.IngredienteControllerDocs;

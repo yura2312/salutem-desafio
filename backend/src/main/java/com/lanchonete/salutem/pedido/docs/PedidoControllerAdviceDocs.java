@@ -1,4 +1,4 @@
-package com.lanchonete.salutem.pedido.controller.docs;
+package com.lanchonete.salutem.pedido.docs;
 
 import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyException;
 import com.lanchonete.salutem.pedido.exception.PedidoItemIdsNotFoundException;

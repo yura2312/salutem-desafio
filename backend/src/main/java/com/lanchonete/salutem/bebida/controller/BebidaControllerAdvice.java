@@ -1,6 +1,6 @@
-package com.lanchonete.salutem.ingredientes;
+package com.lanchonete.salutem.bebida.controller;
 
-import com.lanchonete.salutem.ingredientes.docs.IngredienteControllerAdviceDocs;
+import com.lanchonete.salutem.bebida.BebidaNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class IngredienteControllerAdvisor implements IngredienteControllerAdviceDocs {
+public class BebidaControllerAdvice implements com.lanchonete.salutem.bebida.docs.BebidaControllerAdviceDocs {
 
-    @ExceptionHandler(IngredienteNotFoundException.class)
-    @Override
-    public ResponseEntity<ProblemDetail> ingredienteNotFoundExceptionHandler(IngredienteNotFoundException ex) {
+    @ExceptionHandler(BebidaNotFoundException.class)
+    public ResponseEntity<ProblemDetail> bebidaNotFoundExceptionHandler(BebidaNotFoundException ex) {
         var problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problem.setTitle("Ingrediente não encontrado");
+        problem.setTitle("Bebida não encontrada");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
     }
 }
