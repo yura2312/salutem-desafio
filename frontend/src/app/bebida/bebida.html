@@ -45,6 +45,47 @@
     </form>
 
 
+<form
+  class="flex gap-2 items-start mt-6"
+  (submit)="pesquisar(); $event.preventDefault()"
+>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Buscar por</mat-label>
+
+    <mat-select [formField]="buscaForm.tipo">
+      <mat-option value="id">ID</mat-option>
+      <mat-option value="descricao">Descrição</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="flex-1">
+    <mat-label>
+      @if (buscaModel().tipo === 'id') {
+        Digite o ID
+      } @else {
+        Digite a descrição
+      }
+    </mat-label>
+
+    <input
+      matInput
+      [type]="buscaModel().tipo === 'id' ? 'number' : 'text'"
+      [formField]="buscaForm.termo"
+      (input)="verificarBarraDeBusca()"
+    />
+  </mat-form-field>
+
+  <button
+    matButton="filled"
+    type="submit"
+    class="h-14"
+  >
+    Pesquisar
+  </button>
+</form>
+
+
     <!-- ultimas 5 bebidas -->
 
     <div class="mt-10">
