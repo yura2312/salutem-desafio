@@ -1,6 +1,7 @@
 package com.lanchonete.salutem.hamburguer.docs;
 
-import com.lanchonete.salutem.hamburguer.HamburguerNotFoundException;
+import com.lanchonete.salutem.hamburguer.exception.HamburguerIngredienteEmptyException;
+import com.lanchonete.salutem.hamburguer.exception.HamburguerNotFoundException;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,4 +28,21 @@ public interface HamburguerControllerAdviceDocs {
                                     """
                     )))
     ResponseEntity<ProblemDetail> hamburguerNotFoundExceptionHandler(HamburguerNotFoundException ex);
+
+
+    @ApiResponse(responseCode = "400", description = "Lista de ingredientes vazia",
+            content = @Content(mediaType = "application/problem+json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(
+                            name = "Lista de ingredientes vazia",
+                            value = """
+                                    {
+                                      "detail": "Lista de ingredientes não pode ser vazia",
+                                      "instance": "/api/hamburguers",
+                                      "status": 400,
+                                      "title": "Lista de ingredientes vazia"
+                                    }
+                                    """
+                    )))
+    ResponseEntity<ProblemDetail> hamburguerIngredienteEmptyExceptionHandler(HamburguerIngredienteEmptyException ex);
 }
