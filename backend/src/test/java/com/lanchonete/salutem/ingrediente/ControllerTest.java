@@ -1,8 +1,8 @@
 package com.lanchonete.salutem.ingrediente;
 
-import com.lanchonete.salutem.ingredientes.controller.IngredienteController;
 import com.lanchonete.salutem.ingredientes.IngredienteNotFoundException;
 import com.lanchonete.salutem.ingredientes.IngredienteService;
+import com.lanchonete.salutem.ingredientes.controller.IngredienteController;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteRequest;
 import com.lanchonete.salutem.ingredientes.model.dto.IngredienteResponse;
 import org.junit.jupiter.api.DisplayName;

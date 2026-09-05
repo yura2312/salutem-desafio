@@ -1,8 +1,8 @@
 package com.lanchonete.salutem.hamburguer.controller;
 
+import com.lanchonete.salutem.hamburguer.docs.HamburguerControllerAdviceDocs;
 import com.lanchonete.salutem.hamburguer.exception.HamburguerIngredienteEmptyException;
 import com.lanchonete.salutem.hamburguer.exception.HamburguerNotFoundException;
-import com.lanchonete.salutem.hamburguer.docs.HamburguerControllerAdviceDocs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;

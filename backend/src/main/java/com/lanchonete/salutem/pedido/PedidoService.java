@@ -8,9 +8,9 @@ import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyExc
 import com.lanchonete.salutem.pedido.exception.PedidoItemIdsNotFoundException;
 import com.lanchonete.salutem.pedido.exception.PedidoNotFoundException;
 import com.lanchonete.salutem.pedido.mapper.PedidoMapper;
-import com.lanchonete.salutem.pedido.model.entity.*;
 import com.lanchonete.salutem.pedido.model.dto.PedidoRequest;
 import com.lanchonete.salutem.pedido.model.dto.PedidoResponse;
+import com.lanchonete.salutem.pedido.model.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,9 +1,9 @@
 package com.lanchonete.salutem.hamburguer.controller;
 
 import com.lanchonete.salutem.hamburguer.HamburguerService;
+import com.lanchonete.salutem.hamburguer.docs.HamburguerControllerDocs;
 import com.lanchonete.salutem.hamburguer.model.dto.HamburguerRequest;
 import com.lanchonete.salutem.hamburguer.model.dto.HamburguerResponse;
-import com.lanchonete.salutem.hamburguer.docs.HamburguerControllerDocs;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

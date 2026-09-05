@@ -1,6 +1,5 @@
 package com.lanchonete.salutem.hamburguer.model.dto;
 
-import com.lanchonete.salutem.ingredientes.model.dto.IngredienteResponse;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;

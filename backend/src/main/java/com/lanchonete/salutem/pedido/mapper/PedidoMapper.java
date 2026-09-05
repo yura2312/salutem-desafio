@@ -1,8 +1,8 @@
 package com.lanchonete.salutem.pedido.mapper;
 
-import com.lanchonete.salutem.pedido.model.entity.PedidoEntity;
 import com.lanchonete.salutem.pedido.model.dto.PedidoRequest;
 import com.lanchonete.salutem.pedido.model.dto.PedidoResponse;
+import com.lanchonete.salutem.pedido.model.entity.PedidoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

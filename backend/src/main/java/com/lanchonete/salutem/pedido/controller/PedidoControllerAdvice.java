@@ -1,9 +1,9 @@
 package com.lanchonete.salutem.pedido.controller;
 
+import com.lanchonete.salutem.pedido.docs.PedidoControllerAdviceDocs;
 import com.lanchonete.salutem.pedido.exception.PedidoBebidaAndHamburguerEmptyException;
 import com.lanchonete.salutem.pedido.exception.PedidoItemIdsNotFoundException;
 import com.lanchonete.salutem.pedido.exception.PedidoNotFoundException;
-import com.lanchonete.salutem.pedido.docs.PedidoControllerAdviceDocs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
