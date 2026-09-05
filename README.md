@@ -107,5 +107,5 @@ __Importante notar que é possível utilizar o DataJpaTest em casos de uso de JP
 ## Como rodar a aplicacao
 
 1. Clonar repositorio: git clone https://github.com/yura2312/salutem-desafio.git
-2. Rodar o docker compose: docker-compose up -d
+2. Rodar o docker compose: docker-compose up --build -d
 3. Acessar a aplicacao em http://localhost:8080
