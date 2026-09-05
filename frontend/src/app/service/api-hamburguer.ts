@@ -4,13 +4,13 @@ import { IngredienteResponse } from './api-ingrediente';
 import { Observable } from 'rxjs';
 
 export interface HamburguerRequest {
-  descricao: string;
+  descricao: number;
   valor: number;
   idIngredientes: number[];
 }
 
 export interface HamburguerResponse {
-  id: string;
+  id: number;
   descricao: string;
   valor: number;
   ingredientes: IngredienteResponse[];
@@ -18,7 +18,7 @@ export interface HamburguerResponse {
 
 @Service()
 export class ApiHamburguer {
-  private readonly apiUrl = 'http://localhost:8080/api/hamburguers';
+  private readonly apiUrl = '/api/hamburguers';
 
   private http = inject(HttpClient);
 
@@ -26,15 +26,15 @@ export class ApiHamburguer {
     return this.http.post<HamburguerResponse>(this.apiUrl, hamburguer);
   }
 
-  get(id: number): Observable<HamburguerResponse> {
+  get(id: string | number): Observable<HamburguerResponse> {
     return this.http.get<HamburguerResponse>(`${this.apiUrl}/${id}`);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string | number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  update(id: number, hamburguer: HamburguerRequest): Observable<HamburguerResponse> {
+  update(id: string | number, hamburguer: HamburguerRequest): Observable<HamburguerResponse> {
     return this.http.put<HamburguerResponse>(`${this.apiUrl}/${id}`, hamburguer);
   }
 
