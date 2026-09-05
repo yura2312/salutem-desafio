@@ -36,4 +36,8 @@ export class ApiBebida {
   getByDescricao(descricao: string): Observable<BebidaResponse[]> {
     return this.http.get<BebidaResponse[]>(this.apiUrl, { params: { descricao } });
   }
+
+  delete(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/${id}`);
+}
 }

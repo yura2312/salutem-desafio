@@ -1,0 +1,11 @@
+<div class="flex gap-4">
+    @for(card of cards; track card.rota) {
+    <mat-card appearance="outlined" class="w-full cursor-pointer" routerLink="{{ card.rota }}"
+    >
+        <mat-card-header>
+            <mat-card-title> {{ card.titulo }} </mat-card-title>
+            <mat-card-subtitle>Navegar</mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+    }
+</div>
