@@ -1,16 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from "./header/header";
-import { Card } from "./card/card";
-import { CrudActions } from "./shared/crud-actions/crud-actions";
-import { Bebida } from './bebida/bebida';
+import { Header } from './shared/header/header';
+import { Card } from './shared/card/card';
 
 @Component({
-  imports: [RouterOutlet, Header, Bebida],
+  imports: [RouterOutlet, Header, Card],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('frontend');
-}
+export class App {}

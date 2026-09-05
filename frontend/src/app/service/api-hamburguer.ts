@@ -4,7 +4,7 @@ import { IngredienteResponse } from './api-ingrediente';
 import { Observable } from 'rxjs';
 
 export interface HamburguerRequest {
-  descricao: number;
+  descricao: string;
   valor: number;
   idIngredientes: number[];
 }
@@ -26,15 +26,15 @@ export class ApiHamburguer {
     return this.http.post<HamburguerResponse>(this.apiUrl, hamburguer);
   }
 
-  get(id: string | number): Observable<HamburguerResponse> {
+  get(id: number | number): Observable<HamburguerResponse> {
     return this.http.get<HamburguerResponse>(`${this.apiUrl}/${id}`);
   }
 
-  delete(id: string | number): Observable<void> {
+  delete(id: number | number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  update(id: string | number, hamburguer: HamburguerRequest): Observable<HamburguerResponse> {
+  update(id: number | number, hamburguer: HamburguerRequest): Observable<HamburguerResponse> {
     return this.http.put<HamburguerResponse>(`${this.apiUrl}/${id}`, hamburguer);
   }
 

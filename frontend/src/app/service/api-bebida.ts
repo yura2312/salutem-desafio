@@ -14,7 +14,7 @@ export interface BebidaResponse extends BebidaRequest {
 
 @Service()
 export class ApiBebida {
-  private readonly apiUrl = 'http://localhost:8080/api/bebidas';
+  private readonly apiUrl = '/api/bebidas';
   private readonly http = inject(HttpClient);
 
   save(bebida: BebidaRequest): Observable<BebidaResponse> {

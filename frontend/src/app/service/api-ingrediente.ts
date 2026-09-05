@@ -14,7 +14,7 @@ export interface IngredienteResponse extends IngredienteRequest {
 
 @Service()
 export class ApiIngrediente {
-  private readonly apiUrl = 'http://localhost:8080/api/ingrediente';
+  private readonly apiUrl = '/api/ingrediente';
   private readonly http = inject(HttpClient);
 
   save(ingrediente: IngredienteRequest): Observable<IngredienteResponse> {

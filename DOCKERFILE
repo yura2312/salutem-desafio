@@ -1,0 +1,47 @@
+FROM node:24.20.0-alpine3.23 AS frontend-build
+
+WORKDIR /workspace/frontend
+
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+
+COPY frontend/ ./
+RUN npm run build
+
+
+FROM maven:3.9.16-eclipse-temurin-25-alpine AS backend-build
+
+WORKDIR /workspace/backend
+
+COPY backend/pom.xml ./
+RUN mvn -B -ntp dependency:go-offline
+
+COPY backend/src ./src
+COPY --from=frontend-build /workspace/frontend/dist/frontend/browser ./src/main/resources/static
+
+RUN mvn -B -ntp -DskipTests package
+
+
+FROM eclipse-temurin:25.0.4_7-jre-alpine-3.24 AS runtime
+
+LABEL org.opencontainers.image.title="Salutem" \
+      org.opencontainers.image.description="Lanchonete Salutem - Spring Boot, Angular e PostgreSQL"
+
+RUN addgroup -S salutem && adduser -S salutem -G salutem
+
+WORKDIR /app
+
+COPY --from=backend-build --chown=salutem:salutem \
+  /workspace/backend/target/salutem-0.0.1-SNAPSHOT.jar ./app.jar
+
+USER salutem
+
+ENV SPRING_DOCKER_COMPOSE_ENABLED=false \
+    JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

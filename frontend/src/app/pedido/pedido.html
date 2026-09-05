@@ -1,0 +1,410 @@
+<div class="p-8 max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold mb-6">Pedidos</h1>
+
+  <form class="flex flex-col gap-6" (submit)="salvar(); $event.preventDefault()">
+    <!-- DADOS DO CLIENTE -->
+
+    <div class="grid gap-4 md:grid-cols-2">
+      <mat-form-field>
+        <mat-label>Descrição</mat-label>
+
+        <input matInput [formField]="pedidoForm.descricao" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Nome do cliente</mat-label>
+
+        <input matInput [formField]="pedidoForm.clienteNome" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Endereço do cliente</mat-label>
+
+        <input matInput [formField]="pedidoForm.clienteEndereco" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Telefone do cliente</mat-label>
+
+        <input matInput type="tel" [formField]="pedidoForm.clienteTelefone" />
+      </mat-form-field>
+    </div>
+
+    <!-- hamburguer | bebida -->
+
+    <div class="grid gap-8 md:grid-cols-2">
+      <section>
+        <h2 class="text-lg font-semibold mb-4">Hambúrgueres</h2>
+
+        <!-- search -->
+
+        <div class="flex gap-2 items-start">
+          <mat-form-field appearance="outline" class="w-36 shrink-0">
+            <mat-label>Buscar por</mat-label>
+
+            <mat-select [formField]="buscaHamburguerForm.tipo">
+              <mat-option value="id"> ID </mat-option>
+
+              <mat-option value="descricao"> Descrição </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>
+              @if (buscaHamburguerModel().tipo === 'id') {
+                Digite o ID
+              } @else {
+                Digite a descrição
+              }
+            </mat-label>
+
+            <input
+              matInput
+              [type]="buscaHamburguerModel().tipo === 'id' ? 'number' : 'text'"
+              [formField]="buscaHamburguerForm.termo"
+            />
+          </mat-form-field>
+
+          <button matButton="filled" type="button" class="h-14" (click)="pesquisarHamburguer()">
+            Pesquisar
+          </button>
+        </div>
+
+        @if (hamburgueresEncontrados().length > 0) {
+          <p class="text-sm font-medium mb-2">Resultado da pesquisa</p>
+
+          <div class="flex flex-col gap-2 mb-4">
+            @for (hamburguer of hamburgueresEncontrados(); track hamburguer.id) {
+              <button
+                type="button"
+                class="w-full border rounded-lg p-3 text-left cursor-pointer transition hover:bg-gray-100"
+                (click)="selecionarHamburguer(hamburguer)"
+              >
+                <p class="font-semibold">
+                  {{ hamburguer.descricao }}
+                </p>
+
+                <p class="text-sm text-gray-600">
+                  ID: {{ hamburguer.id }}
+                  -
+                  {{ hamburguer.valor | currency: 'BRL' }}
+                </p>
+              </button>
+            }
+          </div>
+        }
+
+        @if (hamburguerSelecionado(); as hamburguer) {
+          <div class="border rounded-lg p-4 mb-4">
+            <p class="text-sm text-gray-500">Item selecionado</p>
+
+            <p class="font-semibold">
+              {{ hamburguer.descricao }}
+            </p>
+
+            <p class="text-sm mb-4">
+              {{ hamburguer.valor | currency: 'BRL' }}
+            </p>
+
+            <div class="flex gap-3 items-start">
+              <mat-form-field appearance="outline" class="w-28">
+                <mat-label>Qtd.</mat-label>
+
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  step="1"
+                  [value]="quantidadeHamburguerSelecionado()"
+                  (input)="quantidadeHamburguerSelecionado.set(+$any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <button
+                matButton="filled"
+                type="button"
+                class="h-14 min-w-14 text-xl"
+                (click)="adicionarHamburguer()"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- adicionar mais -->
+
+        <h3 class="font-semibold mb-2">Adicionados ao pedido</h3>
+
+        <div class="flex flex-col gap-2">
+          @for (hamburguer of hamburgueresSelecionados(); track hamburguer.id) {
+            <div class="flex items-center justify-between gap-3 border rounded-lg p-3">
+              <div>
+                <p class="font-semibold">
+                  {{ hamburguer.quantidade }}x
+                  {{ hamburguer.descricao }}
+                </p>
+
+                <p class="text-sm text-gray-600">
+                  {{ hamburguer.valor | currency: 'BRL' }}
+                </p>
+              </div>
+
+              <button matButton type="button" (click)="removerHamburguer(hamburguer.id)">
+                Remover
+              </button>
+            </div>
+          } @empty {
+            <p class="text-sm text-gray-500">Nenhum hambúrguer adicionado.</p>
+          }
+        </div>
+      </section>
+
+      <!-- bebida -->
+
+      <section>
+        <h2 class="text-lg font-semibold mb-4">Bebidas</h2>
+
+        <!-- search -->
+
+        <div class="flex gap-2 items-start">
+          <mat-form-field appearance="outline" class="w-36 shrink-0">
+            <mat-label>Buscar por</mat-label>
+
+            <mat-select [formField]="buscaBebidaForm.tipo">
+              <mat-option value="id"> ID </mat-option>
+
+              <mat-option value="descricao"> Descrição </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>
+              @if (buscaBebidaModel().tipo === 'id') {
+                Digite o ID
+              } @else {
+                Digite a descrição
+              }
+            </mat-label>
+
+            <input
+              matInput
+              [type]="buscaBebidaModel().tipo === 'id' ? 'number' : 'text'"
+              [formField]="buscaBebidaForm.termo"
+            />
+          </mat-form-field>
+
+          <button matButton="filled" type="button" class="h-14" (click)="pesquisarBebida()">
+            Pesquisar
+          </button>
+        </div>
+
+        @if (bebidasEncontradas().length > 0) {
+          <p class="text-sm font-medium mb-2">Resultado da pesquisa</p>
+
+          <div class="flex flex-col gap-2 mb-4">
+            @for (bebida of bebidasEncontradas(); track bebida.id) {
+              <button
+                type="button"
+                class="w-full border rounded-lg p-3 text-left cursor-pointer transition hover:bg-gray-100"
+                (click)="selecionarBebida(bebida)"
+              >
+                <p class="font-semibold">
+                  {{ bebida.descricao }}
+                </p>
+
+                <p class="text-sm text-gray-600">
+                  ID: {{ bebida.id }}
+                  -
+                  {{ bebida.precoUnitario | currency: 'BRL' }}
+                </p>
+              </button>
+            }
+          </div>
+        }
+
+        @if (bebidaSelecionada(); as bebida) {
+          <div class="border rounded-lg p-4 mb-4">
+            <p class="text-sm text-gray-500">Item selecionado</p>
+
+            <p class="font-semibold">
+              {{ bebida.descricao }}
+            </p>
+
+            <p class="text-sm mb-4">
+              {{ bebida.precoUnitario | currency: 'BRL' }}
+            </p>
+
+            <div class="flex gap-3 items-start">
+              <mat-form-field appearance="outline" class="w-28">
+                <mat-label>Qtd.</mat-label>
+
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  step="1"
+                  [value]="quantidadeBebidaSelecionada()"
+                  (input)="quantidadeBebidaSelecionada.set(+$any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <button
+                matButton="filled"
+                type="button"
+                class="h-14 min-w-14 text-xl"
+                (click)="adicionarBebida()"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- adicionar-->
+
+        <h3 class="font-semibold mb-2">Adicionadas ao pedido</h3>
+
+        <div class="flex flex-col gap-2">
+          @for (bebida of bebidasSelecionadas(); track bebida.id) {
+            <div class="flex items-center justify-between gap-3 border rounded-lg p-3">
+              <div>
+                <p class="font-semibold">
+                  {{ bebida.quantidade }}x
+                  {{ bebida.descricao }}
+                </p>
+
+                <p class="text-sm text-gray-600">
+                  {{ bebida.precoUnitario | currency: 'BRL' }}
+                </p>
+              </div>
+
+              <button matButton type="button" (click)="removerBebida(bebida.id)">Remover</button>
+            </div>
+          } @empty {
+            <p class="text-sm text-gray-500">Nenhuma bebida adicionada.</p>
+          }
+        </div>
+      </section>
+    </div>
+
+    <!-- obs -->
+
+    <mat-form-field class="mt-4">
+      <mat-label>Observações</mat-label>
+
+      <textarea matInput rows="3" [formField]="pedidoForm.observacoes"></textarea>
+    </mat-form-field>
+
+    <!-- criar/salvar -->
+
+    <div class="flex gap-2">
+      <button matButton="filled" type="submit">
+        @if (editandoId() === null) {
+          Criar pedido
+        } @else {
+          Salvar alterações
+        }
+      </button>
+
+      @if (editandoId() !== null) {
+        <button matButton type="button" (click)="cancelarEdicao()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  <!-- buscar pedido -->
+
+  <form class="flex gap-2 items-start mt-10" (submit)="pesquisar(); $event.preventDefault()">
+    <mat-form-field appearance="outline" class="flex-1">
+      <mat-label> Digite o ID do pedido </mat-label>
+
+      <input
+        matInput
+        type="number"
+        [formField]="buscaForm.termo"
+        (input)="verificarBarraDeBusca()"
+      />
+    </mat-form-field>
+
+    <button matButton="filled" type="submit" class="h-14">Pesquisar</button>
+  </form>
+
+  <!-- ======================== -->
+  <!-- ÚLTIMOS PEDIDOS -->
+  <!-- ======================== -->
+
+  <div class="mt-10">
+    <h2 class="text-xl font-semibold mb-4">Últimos pedidos adicionados</h2>
+
+    <div class="flex flex-col gap-3">
+      @for (pedido of ultimosPedidos(); track pedido.id) {
+        <article class="border rounded-lg p-4">
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <p class="font-bold">Pedido #{{ pedido.id }}</p>
+
+              <p class="font-semibold">
+                {{ pedido.descricao }}
+              </p>
+
+              <p class="text-sm">Cliente: {{ pedido.clienteNome }}</p>
+
+              <p class="text-sm">
+                Data:
+                {{ pedido.data | date: 'dd/MM/yyyy HH:mm' }}
+              </p>
+            </div>
+
+            <div class="flex gap-2 shrink-0">
+              <button matButton type="button" (click)="editar(pedido)">Editar</button>
+
+              <button matButton type="button" (click)="deletar(pedido.id)">Excluir</button>
+            </div>
+          </div>
+
+          <div class="mt-3 text-sm">
+            <p>
+              <span class="font-medium"> Hambúrgueres: </span>
+
+              @for (item of pedido.hamburgueres; track item.id; let ultimo = $last) {
+                {{ item.quantidade }}x
+                {{ item.nome }}
+                {{ ultimo ? '' : ', ' }}
+              } @empty {
+                Nenhum
+              }
+            </p>
+
+            <p>
+              <span class="font-medium"> Bebidas: </span>
+
+              @for (item of pedido.bebidas; track item.id; let ultimo = $last) {
+                {{ item.quantidade }}x
+                {{ item.nome }}
+                {{ ultimo ? '' : ', ' }}
+              } @empty {
+                Nenhuma
+              }
+            </p>
+
+            @if (pedido.observacoes) {
+              <p>
+                <span class="font-medium"> Observações: </span>
+
+                {{ pedido.observacoes }}
+              </p>
+            }
+
+            <p class="font-bold mt-2">
+              Total:
+              {{ pedido.valorTotal | currency: 'BRL' }}
+            </p>
+          </div>
+        </article>
+      } @empty {
+        <p class="text-gray-500">Nenhum pedido cadastrado.</p>
+      }
+    </div>
+  </div>
+</div>

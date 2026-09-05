@@ -21,7 +21,7 @@ export class Hamburguer implements OnInit {
 
   readonly hamburguers = signal<HamburguerResponse[]>([]);
   readonly ingredientes = signal<IngredienteResponse[]>([]);
-  readonly editandoId = signal<string | null>(null);
+  readonly editandoId = signal<number | null>(null);
 
   readonly hamburguerModel = signal<HamburguerRequest>({
     descricao: '',
@@ -112,7 +112,7 @@ export class Hamburguer implements OnInit {
     });
   }
 
-  deletar(id: string): void {
+  deletar(id: number): void {
     this.api.delete(id).subscribe({
       next: () => {
         this.hamburguers.update((lista) => lista.filter((hamburguer) => hamburguer.id !== id));
@@ -142,7 +142,7 @@ export class Hamburguer implements OnInit {
     }
 
     if (busca.tipo === 'id') {
-      this.api.get(busca.termo).subscribe({
+      this.api.get(Number(busca.termo)).subscribe({
         next: (hamburguer) => this.hamburguers.set([hamburguer]),
         error: (error) => {
           this.dialog.open(ErrorDialog, {

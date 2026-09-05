@@ -7,8 +7,8 @@ export interface PedidoRequest {
   clienteNome: string;
   clienteEndereco: string;
   clienteTelefone: string;
-  idHamburguerQuantidade: Record<string, number>;
-  idBebidaQuantidade: Record<string, number>;
+  idHamburguerQuantidade: Record<number, number>;
+  idBebidaQuantidade: Record<number, number>;
   observacoes: string;
 }
 
@@ -34,7 +34,7 @@ export interface PedidoResponse {
 
 @Service()
 export class ApiPedido {
-  private readonly apiUrl = 'http://localhost:8080/api/pedidos';
+  private readonly apiUrl = '/api/pedidos';
   private readonly http = inject(HttpClient);
 
   save(pedido: PedidoRequest): Observable<PedidoResponse> {
@@ -47,6 +47,10 @@ export class ApiPedido {
 
   update(id: number, pedido: PedidoRequest): Observable<PedidoResponse> {
     return this.http.put<PedidoResponse>(`${this.apiUrl}/${id}`, pedido);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   getAll(): Observable<PedidoResponse[]> {
