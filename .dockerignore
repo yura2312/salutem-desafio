@@ -1,0 +1,15 @@
+frontend/node_modules
+frontend/dist
+
+backend/target
+backend/.idea
+
+.git
+.gitignore
+.idea
+.vscode
+*.iml
+*.log
+.env
+.env.*
+!.env.sample

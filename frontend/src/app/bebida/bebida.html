@@ -1,0 +1,153 @@
+<div class="p-8 max-w-4xl mx-auto">
+
+    <h1 class="text-2xl font-bold mb-6">
+        Bebidas
+    </h1>
+
+    <!-- signalforms -->
+
+    <form class="flex flex-col gap-4 max-w-md" (submit)="salvar(); $event.preventDefault()">
+
+        <mat-form-field>
+            <mat-label>Descrição</mat-label>
+
+            <input matInput [formField]="bebidaForm.descricao" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Preço unitário</mat-label>
+
+            <input matInput type="number" step="0.01" [formField]="bebidaForm.precoUnitario" />
+        </mat-form-field>
+
+        <mat-checkbox [formField]="bebidaForm.contemAcucar">
+            Contém açúcar
+        </mat-checkbox>
+
+        <div class="flex gap-2">
+
+            <button matButton="filled" type="submit">
+                @if (editandoId() === null) {
+                Criar
+                } @else {
+                Salvar
+                }
+            </button>
+
+            @if (editandoId() !== null) {
+            <button matButton type="button" (click)="cancelarEdicao()">
+                Cancelar
+            </button>
+            }
+
+        </div>
+
+    </form>
+
+
+<form
+  class="flex gap-2 items-start mt-6"
+  (submit)="pesquisar(); $event.preventDefault()"
+>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Buscar por</mat-label>
+
+    <mat-select [formField]="buscaForm.tipo">
+      <mat-option value="id">ID</mat-option>
+      <mat-option value="descricao">Descrição</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="flex-1">
+    <mat-label>
+      @if (buscaModel().tipo === 'id') {
+        Digite o ID
+      } @else {
+        Digite a descrição
+      }
+    </mat-label>
+
+    <input
+      matInput
+      [type]="buscaModel().tipo === 'id' ? 'number' : 'text'"
+      [formField]="buscaForm.termo"
+      (input)="verificarBarraDeBusca()"
+    />
+  </mat-form-field>
+
+  <button
+    matButton="filled"
+    type="submit"
+    class="h-14"
+  >
+    Pesquisar
+  </button>
+</form>
+
+
+    <!-- ultimas 5 bebidas -->
+
+    <div class="mt-10">
+
+        <h2 class="text-xl font-semibold mb-4">
+            Últimas bebidas adicionadas
+        </h2>
+
+        <div class="flex flex-col gap-3">
+
+            @for (bebida of ultimasBebidas(); track bebida.id) {
+
+            <div class="
+            flex
+            justify-between
+            items-center
+            border
+            rounded-lg
+            p-4
+          ">
+
+                <div>
+                    <p class="font-bold">
+                        ID: {{ bebida.id }} 
+                    </p>
+
+                    <p class="font-semibold">
+                        {{ bebida.descricao }} R${{ bebida.precoUnitario }}
+                    </p>
+
+                    <p class="text-sm">
+                        Contém açúcar:
+                        {{ bebida.contemAcucar ? 'Sim' : 'Não' }}
+                    </p>
+
+                </div>
+
+
+                <div class="flex gap-2">
+
+                    <button matButton (click)="editar(bebida)">
+                        Editar
+                    </button>
+
+                    <button matButton (click)="deletar(bebida.id)">
+                        Excluir
+                    </button>
+
+                </div>
+
+            </div>
+
+            } @empty {
+
+            <p class="text-gray-500">
+                Nenhuma bebida cadastrada.
+            </p>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
