@@ -1,6 +1,7 @@
 package com.lanchonete.salutem.hamburguer;
 
 import com.lanchonete.salutem.hamburguer.model.HamburguerEntity;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,8 @@ public interface HamburguerRepository extends JpaRepository<HamburguerEntity, Lo
     where h.descricao ilike '%' || :descricao || '%'
 """)
     List<HamburguerEntity> findByDescricao(String descricao);
+
+
+    @EntityGraph(attributePaths = "ingredientes")
+    List<HamburguerEntity> findAll();
 }
