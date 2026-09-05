@@ -1,5 +1,6 @@
 package com.lanchonete.salutem.pedido.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -28,7 +29,9 @@ public record PedidoRequest(
         String clienteTelefone,
 
         //@NotNull(message = "A lista de ids de hamburgueres não pode ser nula")
+        @Schema(description = "Mapa de id hamburguer para quantidade", example = "{1: 2, 3: 1}")
         Map<Long, Integer> idHamburguerQuantidade,
+        @Schema(description = "Mapa de id bebida para quantidade", example = "{1: 2, 3: 1}")
         Map<Long, Integer> idBebidaQuantidade,
         @Length(max = 100, message = "As observações não podem ter mais de 100 caracteres")
         String observacoes
